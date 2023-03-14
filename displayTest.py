@@ -48,7 +48,6 @@ def  displayReceive():
 
 
 #DS18B20  sensor
-# capteur DS18B20 dans la boite electronique
 DS_Sensor1='28-0217c11ee0ff'
 
 def readDS18B20( CapteurId):
@@ -111,7 +110,7 @@ try:
                             #turn light ON
                             GPIO.output(LIGHT,1)
                          elif ord(buffer[2]) == 3:
-                            #this is button ON
+                            #this is button OFF
                             #turn light OFF
                             GPIO.output(LIGHT,0)
         time.sleep(0.010)
