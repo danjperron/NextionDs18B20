@@ -83,7 +83,7 @@ lastTime = datetime.datetime.now() - datetime.timedelta(seconds=30)
 try:
     while True:
 
-        # read temperature every 30 seconds
+        # read temperature every 2 seconds
         now = datetime.datetime.now()
 
         if (now - lastTime).total_seconds() > 2:
