@@ -40,12 +40,14 @@ def  displayReceive():
            threeFF=0
        inBuffer.append(v)
        if threeFF == 3:
+           threeFF=0
+           if len(inBuffer)<4:
+               inBuffer=[]
+               break
            returnBuffer =  inBuffer[:-3]
            inBuffer=[]
            return True, returnBuffer
-
    return False, None
-
 
 #DS18B20  sensor
 DS_Sensor1='28-0217c11ee0ff'
@@ -79,11 +81,10 @@ def readDS18B20( CapteurId):
 
 lastTime = datetime.datetime.now() - datetime.timedelta(seconds=30)
 
-
 try:
     while True:
 
-        # read temperature every 2 seconds
+        # read temperature every 30 seconds
         now = datetime.datetime.now()
 
         if (now - lastTime).total_seconds() > 2:
@@ -100,19 +101,21 @@ try:
             #let's decode info
             # 'e' => 0x65  touch event
             if buffer[0] == b'e':
-                 #check which page
-                 if ord(buffer[1]) == 0:
-                     #check if it is press
-                     if ord(buffer[3])==1:
-                        #check which ID
-                         if ord(buffer[2]) ==  2:
-                            #this is button ON
-                            #turn light ON
-                            GPIO.output(LIGHT,1)
-                         elif ord(buffer[2]) == 3:
-                            #this is button OFF
-                            #turn light OFF
-                            GPIO.output(LIGHT,0)
+                 #got touch let's check if  len buffer is 4
+                 if len(buffer) == 4:
+                     #check which page
+                     if ord(buffer[1]) == 0:
+                         #check if it is press
+                         if ord(buffer[3])==1:
+                             #check which ID
+                             if ord(buffer[2]) ==  2:
+                                 #this is button ON
+                                 #turn light ON
+                                 GPIO.output(LIGHT,1)
+                             elif ord(buffer[2]) == 3:
+                                 #this is button ON
+                                 #turn light OFF
+                                 GPIO.output(LIGHT,0)
         time.sleep(0.010)
 except KeyboardInterrupt:
     pass
